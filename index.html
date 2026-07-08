@@ -519,12 +519,15 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    function handleSubmit(event) {
+    const CONTACT_WORKER = 'https://nvaughn-contact.<YOUR_SUBDOMAIN>.workers.dev';
+
+    async function handleSubmit(event) {
       event.preventDefault();
       const name    = document.getElementById('contactName').value.trim();
       const email   = document.getElementById('contactEmail').value.trim();
       const message = document.getElementById('contactMessage').value.trim();
       const status  = document.getElementById('formStatus');
+      const btn     = event.target.querySelector('button[type="submit"]');
 
       if (!name || !email || !message) {
         status.style.color = '#c0392b';
@@ -532,18 +535,34 @@
         return;
       }
 
-      const subject = encodeURIComponent('Message from ' + name + ' via gentlewarrioryoga.com');
-      const body    = encodeURIComponent(
-        'Name: ' + name + '\n' +
-        'Email: ' + email + '\n\n' +
-        'Message:\n' + message
-      );
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      status.textContent = '';
 
-      window.location.href = 'mailto:nathan.vaughn.tn@gmail.com?subject=' + subject + '&body=' + body;
+      try {
+        const res = await fetch(CONTACT_WORKER, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, message }),
+        });
 
-      status.style.color = '#6b8f6b';
-      status.textContent = 'Opening your email client…';
-      document.getElementById('contactForm').reset();
+        const data = await res.json();
+
+        if (res.ok && data.ok) {
+          status.style.color = '#6b8f6b';
+          status.textContent = 'Message sent — I\'ll be in touch soon.';
+          document.getElementById('contactForm').reset();
+        } else {
+          status.style.color = '#c0392b';
+          status.textContent = data.error || 'Something went wrong. Please try again.';
+        }
+      } catch {
+        status.style.color = '#c0392b';
+        status.textContent = 'Could not reach the server. Please try again.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Send Message';
+      }
     }
   </script>
 
