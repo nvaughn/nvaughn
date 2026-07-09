@@ -12,16 +12,18 @@
 
   <style>
     :root {
-      --bg:     #f7f6f2;
-      --cream:  #faf8f4;
-      --forest: #2d4a2d;
-      --sage:   #6b8f6b;
-      --gold:   #c9a84c;
-      --dark:   #1e2a1e;
-      --muted:  #5c6b5c;
-      --card:   #ffffff;
-      --border: #e0ddd5;
-      --radius: 16px;
+      --bg:        #f7f6f2;
+      --cream:     #faf8f4;
+      --forest:    #2d4a2d;
+      --sage:      #6b8f6b;
+      --sage-text: #3d5e3d; /* darkened sage — 5.2:1 on --bg, meets WCAG AA */
+      --gold:      #c9a84c;
+      --gold-text: #7a5c00; /* darkened gold — 5.7:1 on --bg, meets WCAG AA */
+      --dark:      #1e2a1e;
+      --muted:     #5c6b5c;
+      --card:      #ffffff;
+      --border:    #e0ddd5;
+      --radius:    16px;
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -32,6 +34,29 @@
       background: var(--bg);
       color: var(--dark);
       line-height: 1.7;
+    }
+
+    /* ── Skip link ── */
+    .skip-link {
+      position: absolute;
+      top: -999px;
+      left: 1rem;
+      z-index: 100;
+      background: var(--forest);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 0 0 8px 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* ── Focus visible ── */
+    :focus-visible {
+      outline: 2px solid var(--forest);
+      outline-offset: 3px;
+      border-radius: 4px;
     }
 
     /* ── Nav ── */
@@ -74,9 +99,9 @@
       font-size: 0.7rem;
       font-weight: 600;
       letter-spacing: 0.08em;
-      color: var(--gold);
-      background: rgba(201,168,76,0.12);
-      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--forest);
+      background: rgba(201,168,76,0.18);
+      border: 1px solid rgba(201,168,76,0.4);
       padding: 3px 10px;
       border-radius: 999px;
       white-space: nowrap;
@@ -98,7 +123,7 @@
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--gold-text);
       margin-bottom: 1.2rem;
     }
 
@@ -144,7 +169,7 @@
       border-radius: 999px;
       border: 1.5px solid var(--sage);
       background: transparent;
-      color: var(--sage);
+      color: var(--sage-text);
       font-family: 'Inter', sans-serif;
       font-size: 0.9rem;
       font-weight: 500;
@@ -201,7 +226,7 @@
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--gold-text);
       margin-bottom: 0.75rem;
     }
 
@@ -317,7 +342,7 @@
       margin: 0;
     }
 
-    footer a { color: var(--sage); text-decoration: none; }
+    footer a { color: var(--sage-text); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
 
     /* ── Responsive ── */
@@ -332,8 +357,10 @@
 </head>
 <body>
 
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
   <!-- NAV -->
-  <nav>
+  <nav aria-label="Main navigation">
     <a class="brand" href="https://gentlewarrioryoga.com" target="_blank" rel="noopener">
       <svg class="brand-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
@@ -345,7 +372,7 @@
   </nav>
 
   <!-- HERO -->
-  <header>
+  <header id="main-content">
     <div class="hero-text">
       <p class="hero-tag">Yoga for the Life You're Actually Living</p>
       <h1>The Practice That Fits Your Week.</h1>
@@ -367,15 +394,15 @@
   <!-- CREDENTIAL BAR -->
   <div class="credential-bar" role="list" aria-label="Credentials">
     <div class="credential-item" role="listitem">
-      <span>🎓</span>
+      <span aria-hidden="true">🎓</span>
       <span><strong>RYT-200</strong> · Yoga Alliance Certified</span>
     </div>
     <div class="credential-item" role="listitem">
-      <span>🌿</span>
+      <span aria-hidden="true">🌿</span>
       <span>Founder · <strong>Gentle Warrior Yoga</strong></span>
     </div>
     <div class="credential-item" role="listitem">
-      <span>📍</span>
+      <span aria-hidden="true">📍</span>
       <span>Nashville, TN · <strong>Online Worldwide</strong></span>
     </div>
   </div>
@@ -415,17 +442,17 @@
       </p>
       <div class="offerings-grid">
         <div class="offering-card">
-          <span class="offering-icon">🧘</span>
+          <span class="offering-icon" aria-hidden="true">🧘</span>
           <h3>Personal Practice Sessions</h3>
           <p>Private, one-on-one online sessions tailored to your body, your goals, and the week you're actually having.</p>
         </div>
         <div class="offering-card">
-          <span class="offering-icon">🌬️</span>
+          <span class="offering-icon" aria-hidden="true">🌬️</span>
           <h3>Breathwork & Recovery</h3>
           <p>Pranayama, nervous system regulation, and active recovery for high-demand schedules.</p>
         </div>
         <div class="offering-card">
-          <span class="offering-icon">📖</span>
+          <span class="offering-icon" aria-hidden="true">📖</span>
           <h3>200-Hour YTT Immersion</h3>
           <p>A personal practice immersion for those who want to go deep. Opening soon — visit the site to get on the list.</p>
         </div>
@@ -446,7 +473,7 @@
       custom vocabulary, and family check-ins by email or text.
     </p>
     <div class="offering-card" style="max-width: 640px; display: flex; gap: 1.5rem; align-items: flex-start;">
-      <span class="offering-icon" style="margin: 0; font-size: 2rem; flex-shrink: 0;">🗣️</span>
+      <span class="offering-icon" aria-hidden="true" style="margin: 0; font-size: 2rem; flex-shrink: 0;">🗣️</span>
       <div>
         <h3 style="font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--forest); margin: 0 0 0.5rem;">
           <a href="https://assistbernice.com" target="_blank" rel="noopener" style="color: var(--forest); text-decoration: none;">assistbernice.com</a>
@@ -476,7 +503,7 @@
         Send a Message
       </a>
       <p style="margin-top: 1.25rem; font-size: 0.85rem; color: var(--muted);">
-        Or email directly: <a href="mailto:hello@gentlewarrioryoga.com" style="color: var(--sage);">hello@gentlewarrioryoga.com</a>
+        Or email directly: <a href="mailto:hello@gentlewarrioryoga.com">hello@gentlewarrioryoga.com</a>
       </p>
     </div>
   </section>
