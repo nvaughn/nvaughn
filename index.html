@@ -286,31 +286,6 @@
       box-shadow: 0 4px 24px rgba(0,0,0,0.05);
     }
 
-    .contact-wrap input,
-    .contact-wrap textarea {
-      width: 100%;
-      margin-bottom: 1rem;
-      padding: 0.8rem 1rem;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.93rem;
-      color: var(--dark);
-      background: #fff;
-      outline: none;
-      transition: border-color 0.15s;
-    }
-    .contact-wrap input:focus,
-    .contact-wrap textarea:focus { border-color: var(--sage); }
-
-    .contact-wrap textarea { resize: vertical; }
-
-    #formStatus {
-      margin-top: 0.75rem;
-      font-size: 0.88rem;
-      color: var(--sage);
-      min-height: 1.2em;
-    }
 
     /* ── Footer ── */
     footer {
@@ -381,7 +356,7 @@
       </p>
       <div class="hero-actions">
         <a class="btn-primary" href="https://gentlewarrioryoga.com" target="_blank" rel="noopener">Explore the Practice</a>
-        <a class="btn-outline" href="#contact">Get in Touch</a>
+        <a class="btn-outline" href="https://gentlewarrioryoga.com/contact" target="_blank" rel="noopener">Get in Touch</a>
       </div>
     </div>
     <div class="hero-image">
@@ -493,14 +468,16 @@
     <p style="text-align:center; color: var(--muted); max-width: 480px; margin: 0 auto;">
       Nathan reads every message personally. Ask about training, sessions, or just send a note.
     </p>
-    <div class="contact-wrap">
-      <form id="contactForm" onsubmit="handleSubmit(event)" novalidate>
-        <input type="text" id="contactName" placeholder="Your name" required autocomplete="name" aria-label="Your name" />
-        <input type="email" id="contactEmail" placeholder="your@email.com" required autocomplete="email" aria-label="Email address" />
-        <textarea id="contactMessage" rows="5" placeholder="What's on your mind?" required aria-label="Your message"></textarea>
-        <button type="submit" class="btn-primary" style="width:100%;border-radius:10px;padding:0.9rem;">Send Message</button>
-      </form>
-      <p id="formStatus" role="status" aria-live="polite"></p>
+    <div class="contact-wrap" style="text-align:center;">
+      <p style="color: var(--muted); margin-bottom: 1.5rem;">
+        The contact form lives on Gentle Warrior Yoga — click below and you'll land right on it.
+      </p>
+      <a class="btn-primary" href="https://gentlewarrioryoga.com/contact" target="_blank" rel="noopener" style="border-radius:10px;padding:0.9rem 2rem;display:inline-block;">
+        Send a Message
+      </a>
+      <p style="margin-top: 1.25rem; font-size: 0.85rem; color: var(--muted);">
+        Or email directly: <a href="mailto:hello@gentlewarrioryoga.com" style="color: var(--sage);">hello@gentlewarrioryoga.com</a>
+      </p>
     </div>
   </section>
 
@@ -518,52 +495,6 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    const CONTACT_WORKER = 'https://nvaughn-contact.<YOUR_SUBDOMAIN>.workers.dev';
-
-    async function handleSubmit(event) {
-      event.preventDefault();
-      const name    = document.getElementById('contactName').value.trim();
-      const email   = document.getElementById('contactEmail').value.trim();
-      const message = document.getElementById('contactMessage').value.trim();
-      const status  = document.getElementById('formStatus');
-      const btn     = event.target.querySelector('button[type="submit"]');
-
-      if (!name || !email || !message) {
-        status.style.color = '#c0392b';
-        status.textContent = 'Please fill in all fields.';
-        return;
-      }
-
-      btn.disabled = true;
-      btn.textContent = 'Sending…';
-      status.textContent = '';
-
-      try {
-        const res = await fetch(CONTACT_WORKER, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, message }),
-        });
-
-        const data = await res.json();
-
-        if (res.ok && data.ok) {
-          status.style.color = '#6b8f6b';
-          status.textContent = 'Message sent — I\'ll be in touch soon.';
-          document.getElementById('contactForm').reset();
-        } else {
-          status.style.color = '#c0392b';
-          status.textContent = data.error || 'Something went wrong. Please try again.';
-        }
-      } catch {
-        status.style.color = '#c0392b';
-        status.textContent = 'Could not reach the server. Please try again.';
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Send Message';
-      }
-    }
   </script>
 
 </body>
